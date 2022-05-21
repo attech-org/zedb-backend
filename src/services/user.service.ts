@@ -6,11 +6,11 @@ import {
     deleteUserByIdData,
 } from '../repositories/user.repository';
 
-export function getListUsers(done: any) {
+export const getListUsers = (done: any) => {
     return getUsersData(done);
 }
 
-export function addUser(user: any, done: any) {
+export const addUser = (user: any, done: any) => {
     if (user) {
         addUserData(user, (err: any, result: any) => {
             if (err) {
@@ -24,7 +24,7 @@ export function addUser(user: any, done: any) {
     }
 }
 
-export function findUserById(id: string, done: any) {
+export const findUserById = (id: string, done: any) => {
     if (id) {
         findUserByIdData(id, done);
     } else {
@@ -32,7 +32,7 @@ export function findUserById(id: string, done: any) {
     }
 }
 
-export function changeUserById(id: string, user: any, done: any) {
+export const changeUserById = (id: string, user: any, done: any) => {
     if (user) {
         changeUserData(id, user, done);
     } else {
@@ -40,7 +40,7 @@ export function changeUserById(id: string, user: any, done: any) {
     }
 }
 
-export function deleteUserById(id: string, done: any) {
+export const deleteUserById = (id: string, done: any) => {
     if (id) {
         deleteUserByIdData(id, done);
     } else {

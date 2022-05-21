@@ -1,15 +1,21 @@
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-
 import logger from 'morgan';
 
 
-require('dotenv').config();
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+import dotenv from 'dotenv';
+dotenv.config();
 
-export var app = express();
+import {
+    router as indexRouter
+} from './routes/index';
+
+import {
+    router as usersRouter
+} from './routes/users';
+
+export const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());

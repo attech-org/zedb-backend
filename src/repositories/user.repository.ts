@@ -2,23 +2,23 @@ import * as db from '../db';
 
 import { ObjectId } from 'mongodb';
 
-export function getUsersData(done: any) {
+export const getUsersData = (done: any) => {
     db.get().collection('users').find().toArray((err: any, docs: any) => {
         done(err, docs)
     })
 }
 
-export function findByName(name: string, done: any) {
+export const findByName = (name: string, done: any) => {
     db.get().collection('users').findOne({ name: name }, done);
 }
 
-export function findUserByIdData(id: string, done: any) {
+export const findUserByIdData = (id: string, done: any) => {
     db.get().collection('users').findOne({ _id: new ObjectId(id) }, (err: any, docs: any) => {
         done(err, docs)
     })
 }
 
-export function addUserData(user: any, done: any) {
+export const addUserData = (user: any, done: any) => {
     if (user &&
         user.name) {
         findByName(user.name, (err: any, docs: any) => {
@@ -46,7 +46,7 @@ export function addUserData(user: any, done: any) {
     }
 }
 
-export function changeUserData(id: string, user: any, done: any) {
+export const changeUserData = (id: string, user: any, done: any) => {
     if (id) {
         findUserByIdData(id, (err: any, userInDatabase: any) => {
             if (err) {
@@ -90,7 +90,7 @@ export function changeUserData(id: string, user: any, done: any) {
     }
 }
 
-export function deleteUserByIdData(id: string, done: any) {
+export const deleteUserByIdData = (id: string, done: any) => {
     db.get().collection('users').deleteOne(
         { _id: new ObjectId(id) },
         (err: any, result: any) => {

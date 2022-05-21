@@ -1,5 +1,4 @@
 import express from 'express';
-var router = express.Router();
 import { isAuthorised } from '../middlewares/auth.middleware';
 import {
   getListUsers,
@@ -9,8 +8,10 @@ import {
   deleteUserById,
 } from '../services/user.service';
 
+export const router = express.Router();
+
 /* GET users listing. */
-router.get('/', isAuthorised, function (req: any, res: any, next: any) {
+router.get('/', isAuthorised, (req: any, res: any, next: any) => {
   getListUsers((error: any, result: any) => {
     if (error) {
       return res.status(400).send(`Some error`);
@@ -20,7 +21,7 @@ router.get('/', isAuthorised, function (req: any, res: any, next: any) {
 });
 
 /* GET users by id */
-router.get('/:id', isAuthorised, function (req: any, res: any, next: any) {
+router.get('/:id', isAuthorised, (req: any, res: any, next: any) => {
   findUserById(req.params.id, (error: any, result: any) => {
     if (error) {
       console.log(error);
@@ -33,7 +34,7 @@ router.get('/:id', isAuthorised, function (req: any, res: any, next: any) {
 });
 
 /* add user */
-router.post('/', isAuthorised, function (req: any, res: any, next: any) {
+router.post('/', isAuthorised, (req: any, res: any, next: any) => {
   addUser(req.body, (error: any, result: any) => {
     if (error) {
       console.log(error);
@@ -45,7 +46,7 @@ router.post('/', isAuthorised, function (req: any, res: any, next: any) {
 });
 
 /* change users by id */
-router.put('/:id', isAuthorised, function (req: any, res: any, next: any) {
+router.put('/:id', isAuthorised, (req: any, res: any, next: any) => {
   changeUserById(req.params.id, req.body, (error: any, result: any) => {
     if (error) {
       console.log(error);
@@ -58,7 +59,7 @@ router.put('/:id', isAuthorised, function (req: any, res: any, next: any) {
 });
 
 /* delete users by id */
-router.delete('/:id', isAuthorised, function (req: any, res: any, next: any) {
+router.delete('/:id', isAuthorised, (req: any, res: any, next: any) => {
   deleteUserById(req.params.id, (error: any, result: any) => {
     if (error) {
       console.log(error);
@@ -70,4 +71,4 @@ router.delete('/:id', isAuthorised, function (req: any, res: any, next: any) {
 
 });
 
-module.exports = router;
+

@@ -1,9 +1,9 @@
 import express from 'express';
-var router = express.Router();
+export const router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req: any, res: any, next: any) {
+router.get('/', (req: any, res: any, next: any) => {
   res.send({ title: 'Our ZEDB project!!!' });
 });
 
-module.exports = router;
+

@@ -6,7 +6,7 @@ interface State {
 const state: State = {
     db: null,
 }
-export function connect(urlBase: string, name: string, done: any) {
+export const connect = (urlBase: string, name: string, done: any) => {
     if (state.db) {
         return done
     }
@@ -19,6 +19,6 @@ export function connect(urlBase: string, name: string, done: any) {
     })
 }
 
-export function get() {
+export const get = () => {
     return state.db;
 }
