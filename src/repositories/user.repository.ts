@@ -1,5 +1,6 @@
 import * as db from '../db';
-const ObjectId = require('mongodb').ObjectId;
+
+import { ObjectId } from 'mongodb';
 
 export function getUsersData(done: any) {
     db.get().collection('users').find().toArray((err: any, docs: any) => {
@@ -12,7 +13,7 @@ export function findByName(name: string, done: any) {
 }
 
 export function findUserByIdData(id: string, done: any) {
-    db.get().collection('users').findOne({ _id: ObjectId(id) }, (err: any, docs: any) => {
+    db.get().collection('users').findOne({ _id: new ObjectId(id) }, (err: any, docs: any) => {
         done(err, docs)
     })
 }
@@ -71,7 +72,7 @@ export function changeUserData(id: string, user: any, done: any) {
                             + ` because such user present in database id = ${usersInDatabaseWithNewName._id}!`)
                     }
                     db.get().collection('users').updateOne(
-                        { _id: ObjectId(id) },
+                        { _id: new ObjectId(id) },
                         { $set: user },
                         (errChange: any, result: any) => done(errChange, `user by id = ${id} was modificated`))
 
@@ -79,7 +80,7 @@ export function changeUserData(id: string, user: any, done: any) {
             } else {
                 console.log(user);
                 db.get().collection('users').updateOne(
-                    { _id: ObjectId(id) },
+                    { _id: new ObjectId(id) },
                     { $set: user },
                     (errChange: any, result: any) => done(errChange, `user by id = ${id} was modificated`))
             }
@@ -91,7 +92,7 @@ export function changeUserData(id: string, user: any, done: any) {
 
 export function deleteUserByIdData(id: string, done: any) {
     db.get().collection('users').deleteOne(
-        { _id: ObjectId(id) },
+        { _id: new ObjectId(id) },
         (err: any, result: any) => {
             if (err) {
                 return done(err)

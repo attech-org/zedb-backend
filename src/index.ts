@@ -3,10 +3,12 @@
 /**
  * Module dependencies.
  */
-import * as db  from './db';
-var app = require('./app');
-var debug = require('debug')('zedb-backend:server');
-var http = require('http');
+import * as db from './db';
+import { app } from './app';
+import Debug from "debug";
+const debug = Debug('zedb-backend:server');
+//var debug = require('debug')('zedb-backend:server');
+import http from 'http';
 
 /**
  * Get port from environment and store in Express.
@@ -89,9 +91,9 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-db.connect(process.env.URL_STRING_DATABASE, "zedb", (err:any)=>{
+db.connect(process.env.URL_STRING_DATABASE, "zedb", (err: any) => {
   if (err) {
-      return console.log(err)
+    return console.log(err)
   };
   console.log("database connected!")
 })
