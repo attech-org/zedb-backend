@@ -12,63 +12,57 @@ export const router = express.Router();
 
 /* GET users listing. */
 router.get('/', isAuthorised, (req: any, res: any, next: any) => {
-  getListUsers((error: any, result: any) => {
-    if (error) {
+  getListUsers()
+    .then((result) => {
+      res.send(result);
+    }).catch((error) => {
       return res.status(400).send(`Some error`);
-    }
-    res.send(result);
-  })
+    })
 });
 
 /* GET users by id */
 router.get('/:id', isAuthorised, (req: any, res: any, next: any) => {
-  findUserById(req.params.id, (error: any, result: any) => {
-    if (error) {
+  findUserById(req.params.id)
+    .then((result) => {
+      res.send(result)
+    }).catch((error) => {
       console.log(error);
       res.status(400).send(error);
-    } else {
-      res.send(result)
-    }
-  });
-
+    })
 });
 
 /* add user */
 router.post('/', isAuthorised, (req: any, res: any, next: any) => {
-  addUser(req.body, (error: any, result: any) => {
-    if (error) {
+  addUser(req.body)
+    .then((result) => {
+      res.send(result)
+    }).catch((error) => {
       console.log(error);
       res.status(400).send(error);
-    } else {
-      res.send(result)
-    }
-  });
+    })
+
 });
 
 /* change users by id */
 router.put('/:id', isAuthorised, (req: any, res: any, next: any) => {
-  changeUserById(req.params.id, req.body, (error: any, result: any) => {
-    if (error) {
+  changeUserById(req.params.id, req.body)
+    .then((result) => {
+      res.send(result)
+    }).catch((error: any) => {
       console.log(error);
       res.status(400).send(error);
-    } else {
-      res.send(result)
-    }
-  });
-
+    })
 });
 
 /* delete users by id */
 router.delete('/:id', isAuthorised, (req: any, res: any, next: any) => {
-  deleteUserById(req.params.id, (error: any, result: any) => {
-    if (error) {
+  deleteUserById(req.params.id)
+    .then((result) => {
+      res.send(result)
+    }).catch((error) => {
       console.log(error);
       res.status(400).send(error);
-    } else {
-      res.send(result)
-    }
-  });
-
+    })
 });
 
 

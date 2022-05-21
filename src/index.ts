@@ -92,9 +92,5 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-db.connect(process.env.URL_STRING_DATABASE, "zedb", (err: any) => {
-  if (err) {
-    return console.log(err)
-  };
-  console.log("database connected!")
-})
+db.run(process.env.URL_STRING_DATABASE, "zedb");
+

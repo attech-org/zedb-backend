@@ -1,4 +1,40 @@
-import { MongoClient } from 'mongodb';
+import {
+    Schema,
+    model,
+    connect,
+} from 'mongoose';
+
+// 1. Create an interface representing a document in MongoDB.
+interface IUser {
+    userName: string;
+    name: string;
+    email?: string;
+    phone?: string;
+    avatar?: string;
+    emailConfirmed?: boolean;
+}
+
+// 2. Create a Schema corresponding to the document interface.
+const userSchema = new Schema<IUser>({
+    userName: { type: String, required: true, unique: true},
+    name: { type: String, required: true },
+    email: { type: String, lowercase:true},
+    avatar: String,
+    emailConfirmed: Boolean
+});
+
+// 3. Create a Model.
+export const User = model<IUser>('User', userSchema);
+
+export async function run(urlBase: string, name: string) {
+    // 4. Connect to MongoDB
+    const conn = await connect(urlBase)
+        .then((rez: any) => {
+            console.log("database connected!");
+            //state.db = database.db(name);
+        })
+        .catch((err) => console.log(err)) // ‘oops!’    
+}
 
 interface State {
     db: any;
@@ -6,18 +42,7 @@ interface State {
 const state: State = {
     db: null,
 }
-export const connect = (urlBase: string, name: string, done: any) => {
-    if (state.db) {
-        return done
-    }
-    MongoClient.connect(urlBase, (err: any, database: any) => {
-        if (err) {
-            return done(err);
-        }
-        state.db = database.db(name);
-        done();
-    })
-}
+
 
 export const get = () => {
     return state.db;

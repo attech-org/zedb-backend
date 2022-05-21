@@ -6,44 +6,38 @@ import {
     deleteUserByIdData,
 } from '../repositories/user.repository';
 
-export const getListUsers = (done: any) => {
-    return getUsersData(done);
+export const getListUsers = async () => {
+    return getUsersData();
 }
 
-export const addUser = (user: any, done: any) => {
+export const addUser = async (user: any) => {
     if (user) {
-        addUserData(user, (err: any, result: any) => {
-            if (err) {
-                console.log(err);
-                return done(err)
-            }
-            done(false, result);
-        });
+        return await addUserData(user)
     } else {
-        done("Error in body request");
+        throw ("Error in body request");
     }
 }
 
-export const findUserById = (id: string, done: any) => {
+export const findUserById = async (id: string) => {
     if (id) {
-        findUserByIdData(id, done);
+        return await findUserByIdData(id);
     } else {
-        done("Error in id");
+        throw "Error in id";
     }
 }
 
-export const changeUserById = (id: string, user: any, done: any) => {
+export const changeUserById = async (id: string, user: any) => {
     if (user) {
-        changeUserData(id, user, done);
+        return await changeUserData(id, user);
     } else {
-        done("Error in body request");
+        throw "Error in body request";
     }
 }
 
-export const deleteUserById = (id: string, done: any) => {
+export const deleteUserById = async (id: string) => {
     if (id) {
-        deleteUserByIdData(id, done);
+        return await deleteUserByIdData(id);
     } else {
-        done("Error in id");
+        throw "Error in id";
     }
 }
