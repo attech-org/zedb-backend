@@ -26,24 +26,12 @@ const userSchema = new Schema<IUser>({
 // 3. Create a Model.
 export const User = model<IUser>('User', userSchema);
 
-export async function run(urlBase: string, name: string) {
+export async function run(urlBase: string) {
     // 4. Connect to MongoDB
     const conn = await connect(urlBase)
         .then((rez: any) => {
             console.log("database connected!");
-            //state.db = database.db(name);
         })
         .catch((err) => console.log(err)) // ‘oops!’    
 }
 
-interface State {
-    db: any;
-}
-const state: State = {
-    db: null,
-}
-
-
-export const get = () => {
-    return state.db;
-}

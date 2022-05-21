@@ -92,5 +92,5 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-db.run(process.env.URL_STRING_DATABASE, "zedb");
+db.run(process.env.URL_STRING_DATABASE);
 
