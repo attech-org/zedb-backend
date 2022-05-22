@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+import Logger from "./logger/Logger";
 /**
  * Module dependencies.
  */
@@ -8,6 +8,7 @@ var app = require('./app');
 var debug = require('debug')('zedb-backend:server');
 var http = require('http');
 
+Logger.info("HEY")
 /**
  * Get port from environment and store in Express.
  */
