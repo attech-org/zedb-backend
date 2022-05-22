@@ -1,3 +1,4 @@
+import { Request } from "express";
 import winston from "winston";
 
 const levels = {
@@ -41,11 +42,35 @@ const transports = [
   //new winston.transports.File({ filename: 'logs/all.log' }),
 ];
 
+interface RequestLog {
+    body?: string;
+    query: string;
+    headers?: string;
+    baseUrl: string;
+    originalUrl: string;
+    params?: string;
+    hostname: string;
+    method: string;
+}
+
 const Logger = winston.createLogger({
   level: level(),
   levels,
   format,
   transports,
 });
+
+export const LogRequest=(req:Request) =>{
+    const request : RequestLog={
+        body : req.body,
+        baseUrl : req.baseUrl,
+        originalUrl : req.originalUrl,
+        hostname : req.hostname,
+        method : req.method,
+        params : JSON.stringify(req.params),
+        query : JSON.stringify(req.query),
+    }
+    Logger.info(request)
+} 
 
 export default Logger;
