@@ -4,11 +4,12 @@ import logger from 'morgan';
 import dotenv from 'dotenv';
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
+import logRequest from "./middleware/logRequests";
 
 dotenv.config();
 export const app = express();
 
-app.use(logger('dev'));
+app.use(logRequest)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
