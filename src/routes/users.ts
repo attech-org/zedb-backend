@@ -11,58 +11,57 @@ import {
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', isAuthorised, (req: any, res: any, next: any) => {
-  getListUsers()
-    .then((result) => {
-      res.send(result);
-    }).catch((error) => {
-      return res.status(400).send(`Some error`);
-    })
+router.get('/', isAuthorised, async (req: any, res: any, next: any) => {
+  try {
+    const result = await getListUsers();
+    res.send(result);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 /* GET users by id */
-router.get('/:id', isAuthorised, (req: any, res: any, next: any) => {
-  findUserById(req.params.id)
-    .then((result) => {
-      res.send(result)
-    }).catch((error) => {
-      console.log(error);
-      res.status(400).send(error);
-    })
+router.get('/:id', isAuthorised, async (req: any, res: any, next: any) => {
+  try {
+    const result = await findUserById(req.params.id)
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
 });
 
 /* add user */
-router.post('/', isAuthorised, (req: any, res: any, next: any) => {
-  addUser(req.body)
-    .then((result) => {
-      res.send(result)
-    }).catch((error) => {
-      console.log(error);
-      res.status(400).send(error);
-    })
-
+router.post('/', isAuthorised, async (req: any, res: any, next: any) => {
+  try {
+    const result = await addUser(req.body)
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
 });
 
 /* change users by id */
-router.put('/:id', isAuthorised, (req: any, res: any, next: any) => {
-  changeUserById(req.params.id, req.body)
-    .then((result) => {
-      res.send(result)
-    }).catch((error: any) => {
-      console.log(error);
-      res.status(400).send(error);
-    })
+router.put('/:id', isAuthorised, async (req: any, res: any, next: any) => {
+  try {
+    const result = changeUserById(req.params.id, req.body)
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
 });
 
 /* delete users by id */
-router.delete('/:id', isAuthorised, (req: any, res: any, next: any) => {
-  deleteUserById(req.params.id)
-    .then((result) => {
-      res.send(result)
-    }).catch((error) => {
-      console.log(error);
-      res.status(400).send(error);
-    })
+router.delete('/:id', isAuthorised, async (req: any, res: any, next: any) => {
+  try {
+    const result = await deleteUserById(req.params.id);
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
 });
 
 export default router;
