@@ -8,7 +8,7 @@ import {
   deleteUserById,
 } from '../services/user.service';
 
-export const router = express.Router();
+const router = express.Router();
 
 /* GET users listing. */
 router.get('/', isAuthorised, (req: any, res: any, next: any) => {
@@ -65,4 +65,4 @@ router.delete('/:id', isAuthorised, (req: any, res: any, next: any) => {
     })
 });
 
-
+export default router;

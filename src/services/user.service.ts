@@ -12,7 +12,7 @@ export const getListUsers = async () => {
 
 export const addUser = async (user: any) => {
     if (user) {
-        return await addUserData(user)
+        return addUserData(user)
     } else {
         throw ("Error in body request");
     }
@@ -20,7 +20,7 @@ export const addUser = async (user: any) => {
 
 export const findUserById = async (id: string) => {
     if (id) {
-        return await findUserByIdData(id);
+        return findUserByIdData(id);
     } else {
         throw "Error in id";
     }
@@ -28,7 +28,7 @@ export const findUserById = async (id: string) => {
 
 export const changeUserById = async (id: string, user: any) => {
     if (user) {
-        return await changeUserData(id, user);
+        return changeUserData(id, user);
     } else {
         throw "Error in body request";
     }
@@ -36,7 +36,7 @@ export const changeUserById = async (id: string, user: any) => {
 
 export const deleteUserById = async (id: string) => {
     if (id) {
-        return await deleteUserByIdData(id);
+        return deleteUserByIdData(id);
     } else {
         throw "Error in id";
     }
