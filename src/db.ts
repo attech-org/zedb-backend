@@ -5,7 +5,7 @@ import {
 } from 'mongoose';
 
 // 1. Create an interface representing a document in MongoDB.
-interface IUser {
+interface User {
     userName: string;
     name: string;
     email?: string;
@@ -15,7 +15,7 @@ interface IUser {
 }
 
 // 2. Create a Schema corresponding to the document interface.
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<User>({
     userName: {
         type: String,
         required: true,
@@ -41,7 +41,7 @@ const userSchema = new Schema<IUser>({
 });
 
 // 3. Create a Model.
-export const User = model<IUser>('User', userSchema);
+export const UserModel = model<User>('User', userSchema);
 
 export async function run(urlBase: string) {
     // 4. Connect to MongoDB

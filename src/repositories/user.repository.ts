@@ -3,18 +3,18 @@ import * as db from '../db';
 import { ObjectId } from 'mongodb';
 
 export const getUsersData = async () => {
-    return db.User.find({});
+    return db.UserModel.find({});
 }
 
 export const findUserByIdData = async (id: string) => {
-    return db.User.findOne({ _id: new ObjectId(id) })
+    return db.UserModel.findOne({ _id: new ObjectId(id) })
 }
 
 export const addUserData = async (user: any) => {
     if (user &&
         user.userName) {
 
-        const dbUser = new db.User(user);
+        const dbUser = new db.UserModel(user);
         return dbUser.save();
 
     } else {
@@ -28,7 +28,7 @@ export const changeUserData = async (id: string, user: any) => {
         if (!userInDatabase) {
             throw `Error: User by id ${id} is not found!`;
         }
-        return db.User.updateOne(
+        return db.UserModel.updateOne(
             { _id: new ObjectId(id) },
             { $set: user })
 
@@ -38,5 +38,5 @@ export const changeUserData = async (id: string, user: any) => {
 }
 
 export const deleteUserByIdData = async (id: string) => {
-    return db.User.deleteOne({ _id: new ObjectId(id) })
+    return db.UserModel.deleteOne({ _id: new ObjectId(id) })
 }
