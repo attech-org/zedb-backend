@@ -16,9 +16,26 @@ interface IUser {
 
 // 2. Create a Schema corresponding to the document interface.
 const userSchema = new Schema<IUser>({
-    userName: { type: String, required: true, unique: true},
-    name: { type: String, required: true },
-    email: { type: String, lowercase:true},
+    userName: {
+        type: String,
+        required: true,
+        index: {
+            unique: true,
+            collation: { locale: 'en', strength: 2 }
+        }
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        trim: true,
+        index: true,
+        unique: true,
+        sparse: true,
+        lowercase: true
+    },
     avatar: String,
     emailConfirmed: Boolean
 });
