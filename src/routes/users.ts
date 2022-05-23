@@ -45,7 +45,7 @@ router.post('/', isAuthorised, async (req: any, res: any, next: any) => {
 /* change users by id */
 router.put('/:id', isAuthorised, async (req: any, res: any, next: any) => {
   try {
-    const result = changeUserById(req.params.id, req.body)
+    const result = await changeUserById(req.params.id, req.body)
     res.send(result)
   } catch (err) {
     console.log(err);
