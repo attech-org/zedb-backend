@@ -3,38 +3,19 @@
 /**
  * Module dependencies.
  */
+import * as db from './db';
+import { app } from './app';
+import Debug from "debug";
+const debug = Debug('zedb-backend:server');
 
-var app = require('./app');
-var debug = require('debug')('zedb-backend:server');
-var http = require('http');
-
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+import http from 'http';
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val: any) {
-  var port = parseInt(val, 10);
+const normalizePort = (val: any) => {
+  let port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -50,15 +31,23 @@ function normalizePort(val: any) {
 }
 
 /**
+ * Get port from environment and store in Express.
+ */
+
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+
+/**
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error: any) {
+const onError = (error: any) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === 'string'
+  let bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -81,10 +70,27 @@ function onError(error: any) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+const onListening = () => {
+  let addr = server.address();
+  let bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ * Create HTTP server.
+ */
+
+const server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+db.run(process.env.URL_STRING_DATABASE);
+
