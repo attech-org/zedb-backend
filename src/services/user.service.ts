@@ -7,21 +7,16 @@ import {
     deleteUserByIdData,
 } from '../repositories/user.repository';
 
-import {
-    hashPassword,
-    comparePassword,
-} from '../helpers/utils'
+import * as Utils from '../helpers/utils'
 
 export const getListUsers = async () => {
     return getUsersData();
 }
 
 export const addUser = async (user: any) => {
-    if (user) {
-        return addUserData(user)
-    } else {
-        throw ("Error in body request");
-    }
+    checkUserField(user);
+    user.password = Utils.hashPassword(user.password);
+    return addUserData(user)
 }
 
 export const findUserById = async (id: string) => {
@@ -34,6 +29,12 @@ export const findUserById = async (id: string) => {
 
 export const changeUserById = async (id: string, user: any) => {
     if (user) {
+        if (user.password) {
+            if (!validatePassword(user.password)) {
+                throw 'Password must be more than five(5) characters';
+            }
+            user.password = Utils.hashPassword(user.password);
+        }
         return changeUserData(id, user);
     } else {
         throw "Error in body request";
@@ -48,31 +49,27 @@ export const deleteUserById = async (id: string) => {
     }
 }
 
-export const authSignup = async (user: any) => {
-    checkUserField(user);
-    user.password = hashPassword(user.password);
-    return addUserData(user)
-}
-
 export const authLogin = async (user: any) => {
-    checkUserField(user);  
-    const userInDatabase = await findUserByUserName(user.userName);  
+    checkUserField(user);
+    const userInDatabase = await findUserByUserName(user.userName);
     if (!userInDatabase) {
         throw "Error: 'userName' or 'password' is not correct!!!";
     }
-    if (!comparePassword(userInDatabase.password, user.password)) {
+    if (!Utils.comparePassword(userInDatabase.password, user.password)) {
         throw "Error: 'userName' or 'password' is not correct!!!";
     }
+    const token = Utils.generateJWT(userInDatabase);
+    return { userInDatabase, token }
 
 }
 
-const validatePassword = (password:string) => {
-	if (password.length <= 5 || password === '') {
-		return false
-	} return true
+const validatePassword = (password: string) => {
+    if (password.length <= 5 || password === '') {
+        return false
+    } return true
 }
 
-const checkUserField = (user:any)=>{
+const checkUserField = (user: any) => {
     if (!user) {
         throw ("Error in body request");
     }
@@ -82,7 +79,7 @@ const checkUserField = (user:any)=>{
     if (!user.password) {
         throw "Error: 'password' is absent!!!";
     }
-    if (!validatePassword(user.password)){
+    if (!validatePassword(user.password)) {
         throw 'Password must be more than five(5) characters'
     }
 }
