@@ -4,7 +4,7 @@ import logger from 'morgan';
 import dotenv from 'dotenv';
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
-import logRequest from "./middleware/logRequests";
+import logRequest from "./middlewares/logRequests";
 
 dotenv.config();
 export const app = express();
