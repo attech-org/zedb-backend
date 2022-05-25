@@ -39,7 +39,20 @@ const userSchema = new Schema<User>({
     },
     avatar: String,
     emailConfirmed: Boolean,
-    password: String,
+    password: {
+        type: String,
+        select: false
+    }
+}, {
+    toJSON: {
+        virtuals: true,
+        transform: function (doc, ret) {
+            delete ret._id;
+            delete ret.password;
+            return ret;
+        }
+
+    }
 });
 
 // 3. Create a Model.

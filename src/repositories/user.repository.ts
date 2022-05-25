@@ -10,13 +10,16 @@ export const findUserByIdData = async (id: string) => {
     return db.UserModel.findOne({ _id: new ObjectId(id) })
 }
 
+export const findUserByUserName = async (userName: string) => {
+    return db.UserModel.findOne({ userName: userName })
+}
+
 export const addUserData = async (user: any) => {
     if (user &&
         user.userName) {
-
         const dbUser = new db.UserModel(user);
-        return dbUser.save();
-
+        const userInDatabase = await dbUser.save();
+        return userInDatabase;
     } else {
         throw "Error: 'userName' is absent!!!";
     }

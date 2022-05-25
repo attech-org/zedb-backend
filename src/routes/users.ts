@@ -6,6 +6,8 @@ import {
   findUserById,
   changeUserById,
   deleteUserById,
+  authSignup,
+  authLogin,
 } from '../services/user.service';
 
 const router = express.Router();
@@ -64,4 +66,22 @@ router.delete('/:id', isAuthorised, async (req: any, res: any, next: any) => {
   }
 });
 
+router.post('/auth/signup', async (req: any, res: any, next: any) => {
+  try {
+    const result = await authSignup(req.body);
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+router.post('/auth/login', async (req: any, res: any, next: any) => {
+  try {
+    const result = await authLogin(req.body);
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
 export default router;
