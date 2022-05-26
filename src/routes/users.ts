@@ -33,7 +33,7 @@ router.get('/:id', isAuthorised, async (req: any, res: any, next: any) => {
 });
 
 /* add user */
-router.post('/', async (req: any, res: any, next: any) => {
+router.post('/', isAuthorised, async (req: any, res: any, next: any) => {
   try {
     const result = await addUser(req.body)
     res.send(result)
@@ -74,6 +74,17 @@ router.delete('/:id', isAuthorised, async (req: any, res: any, next: any) => {
 router.post('/auth/login', async (req: any, res: any, next: any) => {
   try {
     const result = await authLogin(req.body);
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+/* create user */
+router.post('/auth/signup', async (req: any, res: any, next: any) => {
+  try {
+    const result = await addUser(req.body)
     res.send(result)
   } catch (err) {
     console.log(err);

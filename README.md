@@ -6,14 +6,15 @@ URL_STRING_DATABASE="take url for database"
 PORT_HTTP="local port your http server"
 secretKeyJWT="any key what you want"
 Now base present in net on MongoDb resurse
-3) Create user by post host:port/users/ 
+3) Create user by post host:port/users/auth/signup
 * Necessary fields are 'userName', 'password', 'name'. 
 * You can also use 'email', 'phone', 'avatar'. 
 * All fields are 'string'. 
 * After that you get response, and body of response have 'token'. You need to add this token in Headers parametr 'Authorization'
 4) You can delete or change user whose token you use. 
 ## rest api ##
-* post: host:port/users/auth/login - authorization
+* post: host:port/users/auth/login - authorization user
+* post: host:port/users/auth/signup - register new user
 * get: host:port/users/ - list of users
 * get: host:port/users/id - get user by id
 * post: host:port/users/ - create user
