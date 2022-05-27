@@ -1,6 +1,21 @@
 import { sign, SignOptions, verify, VerifyOptions, Algorithm } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import * as yup from 'yup';
 
+export const schemaFullCheckUser = yup.object().shape({
+    userName: yup.string().required(),
+    email: yup.string().email(),
+    password: yup.string().min(5).required(),
+});
+export const schemaExistingFieldCheckUser = yup.object().shape({
+    userName: yup.string(),
+    email: yup.string().email(),
+    password: yup.string().min(5),
+});
+export const schemaCheckUserNamePassword = yup.object().shape({
+    userName: yup.string().required(),
+    password: yup.string().min(5).required(),
+});
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
 
@@ -30,4 +45,16 @@ export const verifyJWT = (token: string) => {
     };
 
     return verify(token, process.env.secretKeyJWT, verifyOptions);
+}
+
+export const checkUserAllField = async (user: any) => {
+    return schemaFullCheckUser.validate(user)
+}
+
+export const checkUserExistingField = async (user: any) => {
+    return schemaExistingFieldCheckUser.validate(user)
+}
+
+export const checkUserNamePassword = async (user: any) => {
+    return schemaCheckUserNamePassword.validate(user)
 }
