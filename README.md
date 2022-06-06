@@ -13,7 +13,7 @@ Now base present in net on MongoDb resurse
 * After that you get response, and body of response have 'token'. You need to add this token in Headers parametr 'Authorization'
 4) You can delete or change user whose token you use. 
 ## rest api ##
-* post: host:port/users/auth/login - authorization user
+* post: host:port/users/auth/login - authorization user(in body {"userName":"",password:""} or Headers['Authorization'] = `Google ${googleIdTokenUser}`) result JSON {userInDataBase:{}, token:"someToken"}
 * post: host:port/users/auth/signup - register new user
 * get: host:port/users/ - list of users
 * get: host:port/users/id - get user by id

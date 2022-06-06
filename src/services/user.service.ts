@@ -5,6 +5,7 @@ import {
     findUserByUserName,
     changeUserData,
     deleteUserByIdData,
+    createUserByGoogleData
 } from '../repositories/user.repository';
 
 import * as Utils from '../helpers/utils'
@@ -75,7 +76,13 @@ export const takeGoogleUserData = async (token: string) => {
         const payload = await Google.TakeGoogleUserFromToken(token);
         return payload;
     } catch (err) {
-        throw "" + err;
+        throw  err;
     }
 };
 
+export const takeOrCreateUserByGoogleToken = async (googleTokenId: string) => {
+    const payload = await Google.TakeGoogleUserFromToken(googleTokenId);
+    const userInDatabase = await createUserByGoogleData(payload);
+    const token = "Google " + googleTokenId;
+    return { userInDatabase, token }
+}

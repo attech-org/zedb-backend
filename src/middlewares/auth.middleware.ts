@@ -6,7 +6,7 @@ import {
 
 export const isAuthorised = async (req: any, res: any, next: any) => {
     try {
-        let itsGoogleToken:boolean = false;
+        let itsGoogleToken: boolean = false;
         let token = req.headers['x-access-token'] || req.headers.authorization || req.body.token
         console.log(token, 'token');
         if (!token) throw new Error('No token provided.');
@@ -18,7 +18,7 @@ export const isAuthorised = async (req: any, res: any, next: any) => {
 
         if (!token || token === '' || token === 'undefined') throw new Error('No token provided.')
         let user;
-        if (!itsGoogleToken){
+        if (!itsGoogleToken) {
             user = Utils.verifyJWT(token);
         } else {
             const googleUser = await Google.TakeGoogleUserFromToken(token);
@@ -30,6 +30,10 @@ export const isAuthorised = async (req: any, res: any, next: any) => {
 
         next()
     } catch (e) {
-        res.status(401).send('Failed to authenticate token');
+        if (e.message.includes('Token used too late')) {
+            res.status(401).send("TokenExpired");
+        } else {
+            res.status(401).send('Failed to authenticate token');
+        }
     }
 }

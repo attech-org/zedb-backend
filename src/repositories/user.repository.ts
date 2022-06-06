@@ -82,6 +82,11 @@ export const deleteUserByIdData = async (id: string) => {
 
 export const findUserByGoogleData = async (googleUser:any) => {
     const user = await findUserByEmail(googleUser.email);
+    return user;
+}
+
+export const createUserByGoogleData = async (googleUser:any) => {
+    const user = await findUserByEmail(googleUser.email);
     if (user===null){
         const dbUser = new db.UserModel();
         dbUser.userName = googleUser.email;

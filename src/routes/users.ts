@@ -8,9 +8,9 @@ import {
   deleteUserById,
   authLogin,
   takeGoogleUserData,
+  takeOrCreateUserByGoogleToken,
 } from '../services/user.service';
 
-import passport from 'passport';
 
 const router = express.Router();
 
@@ -20,7 +20,12 @@ router.get('/googleCheckIdToken', async (req: any, res: any, next: any) => {
     res.send(result);
   } catch (err) {
     console.log(`router ${err}`);
-    res.status(400).send("" + err);
+    if (err.message.includes('Token used too late')) {
+      res.status(401).send("TokenExpired");
+    } else {
+      res.status(400).send("" + err);
+    }
+
   }
 });
 
@@ -86,22 +91,22 @@ router.delete('/:id', isAuthorised, async (req: any, res: any, next: any) => {
 
 router.post('/auth/login', async (req: any, res: any, next: any) => {
   try {
-    const result = await authLogin(req.body);
+
+    let token = req.headers.authorization;
+    let result;
+    console.log(token, 'token');
+    if (token && token.startsWith('Google ')) {
+      token = token.slice(7, token.length);
+      result = await takeOrCreateUserByGoogleToken(token);
+    } else {
+      result = await authLogin(req.body);
+    }
     res.send(result)
   } catch (err) {
     console.log(err);
     res.status(400).send(err);
   }
 });
-
-router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/error' }),
-  function (req, res) {
-    // Successful authentication, redirect success.
-    res.send(req.user);
-    //res.redirect('/success');
-  });
-
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email', 'openid'] }));
 
 /* create user */
 router.post('/auth/signup', async (req: any, res: any, next: any) => {
@@ -113,8 +118,5 @@ router.post('/auth/signup', async (req: any, res: any, next: any) => {
     res.status(400).send(err);
   }
 });
-
-
-
 
 export default router;
