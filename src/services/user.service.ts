@@ -9,6 +9,8 @@ import {
 
 import * as Utils from '../helpers/utils'
 
+import * as Google from '../helpers/google'
+
 export const getListUsers = async () => {
     return getUsersData();
 }
@@ -67,4 +69,13 @@ export const authLogin = async (user: any) => {
     const token = Utils.generateJWT(userInDatabase);
     return { userInDatabase, token }
 }
+
+export const takeGoogleUserData = async (token: string) => {
+    try {
+        const payload = await Google.TakeGoogleUserFromToken(token);
+        return payload;
+    } catch (err) {
+        throw "" + err;
+    }
+};
 

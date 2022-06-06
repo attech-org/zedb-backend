@@ -14,6 +14,10 @@ export const findUserByUserName = async (userName: string) => {
     return db.UserModel.findOne({ userName: userName })
 }
 
+export const findUserByEmail = async (email: string) => {
+    return db.UserModel.findOne({ email: email })
+}
+
 export const addUserData = async (user: any) => {
     try {
         if (user &&
@@ -74,4 +78,20 @@ export const changeUserData = async (id: string, user: any) => {
 
 export const deleteUserByIdData = async (id: string) => {
     return db.UserModel.deleteOne({ _id: new ObjectId(id) })
+}
+
+export const findUserByGoogleData = async (googleUser:any) => {
+    const user = await findUserByEmail(googleUser.email);
+    if (user===null){
+        const dbUser = new db.UserModel();
+        dbUser.userName = googleUser.email;
+        dbUser.name = googleUser.name;
+        dbUser.email = googleUser.email;
+        dbUser.avatar = googleUser.picture;
+        dbUser.emailConfirmed = googleUser.email_verified;
+        const userInDatabase = await dbUser.save();
+        return userInDatabase;        
+    } else {
+        return user;
+    }
 }
