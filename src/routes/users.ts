@@ -87,7 +87,7 @@ router.post('/auth/signup', async (req: any, res: any, next: any) => {
     const result = await addUser(req.body)
     res.send(result)
   } catch (err) {
-    console.log(err);
+    console.log(`router ${err}`);
     res.status(400).send(err);
   }
 });

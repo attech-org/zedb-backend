@@ -14,9 +14,13 @@ export const getListUsers = async () => {
 }
 
 export const addUser = async (user: any) => {
-    checkUserField(user);
-    user.password = Utils.hashPassword(user.password);
-    return addUserData(user)
+    try {
+        await Utils.checkUserAllField(user);
+        user.password = Utils.hashPassword(user.password);
+        return addUserData(user)
+    } catch (err) {
+        throw "" + err;
+    }
 }
 
 export const findUserById = async (id: string) => {
@@ -28,17 +32,15 @@ export const findUserById = async (id: string) => {
 }
 
 export const changeUserById = async (id: string, user: any) => {
-    if (user) {
+    try {
+        await Utils.checkUserExistingField(user);
         if (user.password) {
-            if (!validatePassword(user.password)) {
-                throw 'Password must be more than five(5) characters';
-            }
             user.password = Utils.hashPassword(user.password);
         }
-        return changeUserData(id, user);
-    } else {
-        throw "Error in body request";
+    } catch (err) {
+        throw "" + err;
     }
+    return changeUserData(id, user);
 }
 
 export const deleteUserById = async (id: string) => {
@@ -50,7 +52,11 @@ export const deleteUserById = async (id: string) => {
 }
 
 export const authLogin = async (user: any) => {
-    checkUserField(user);
+    try {
+        await Utils.checkUserNamePassword(user);
+    } catch (err) {
+        throw "" + err;
+    }
     const userInDatabase = await findUserByUserName(user.userName);
     if (!userInDatabase) {
         throw "Error: 'userName' or 'password' is not correct!!!";
@@ -60,26 +66,5 @@ export const authLogin = async (user: any) => {
     }
     const token = Utils.generateJWT(userInDatabase);
     return { userInDatabase, token }
-
 }
 
-const validatePassword = (password: string) => {
-    if (password.length <= 5 || password === '') {
-        return false
-    } return true
-}
-
-const checkUserField = (user: any) => {
-    if (!user) {
-        throw ("Error in body request");
-    }
-    if (!user.userName) {
-        throw "Error: 'userName' is absent!!!";
-    }
-    if (!user.password) {
-        throw "Error: 'password' is absent!!!";
-    }
-    if (!validatePassword(user.password)) {
-        throw 'Password must be more than five(5) characters'
-    }
-}
