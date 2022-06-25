@@ -7,9 +7,27 @@ import {
   changeUserById,
   deleteUserById,
   authLogin,
+  takeGoogleUserData,
+  takeOrCreateUserByGoogleToken,
 } from '../services/user.service';
 
+
 const router = express.Router();
+
+router.get('/googleCheckIdToken', async (req: any, res: any, next: any) => {
+  try {
+    const result = await takeGoogleUserData(req.body.token)
+    res.send(result);
+  } catch (err) {
+    console.log(`router ${err}`);
+    if (err.message.includes('Token used too late')) {
+      res.status(401).send("TokenExpired");
+    } else {
+      res.status(400).send("" + err);
+    }
+
+  }
+});
 
 /* GET users listing. */
 router.get('/', isAuthorised, async (req: any, res: any, next: any) => {
@@ -73,7 +91,16 @@ router.delete('/:id', isAuthorised, async (req: any, res: any, next: any) => {
 
 router.post('/auth/login', async (req: any, res: any, next: any) => {
   try {
-    const result = await authLogin(req.body);
+
+    let token = req.headers.authorization;
+    let result;
+    console.log(token, 'token');
+    if (token && token.startsWith('Google ')) {
+      token = token.slice(7, token.length);
+      result = await takeOrCreateUserByGoogleToken(token);
+    } else {
+      result = await authLogin(req.body);
+    }
     res.send(result)
   } catch (err) {
     console.log(err);
