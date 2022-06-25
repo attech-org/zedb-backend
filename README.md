@@ -3,8 +3,8 @@
 1) Create file .env
 2) Fill .env:
 URL_STRING_DATABASE="take url for database"
-PORT_HTTP="local port your http server"
-secretKeyJWT="any key what you want"
+PORT="local port your http server"
+JWT_SECRET="any key what you want"
 Now base present in net on MongoDb resurse
 3) Create user by post host:port/users/auth/signup
 * Necessary fields are 'userName', 'password', 'name'. 

@@ -36,7 +36,7 @@ export const generateJWT = (payload: any) => {
     return sign({
         id: payload._id,
         userName: payload.userName,
-    }, process.env.secretKeyJWT, signOptions);
+    }, process.env.JWT_SECRET, signOptions);
 }
 
 export const verifyJWT = (token: string) => {
@@ -44,7 +44,7 @@ export const verifyJWT = (token: string) => {
         algorithms: ['HS256'],
     };
 
-    return verify(token, process.env.secretKeyJWT, verifyOptions);
+    return verify(token, process.env.JWT_SECRET, verifyOptions);
 }
 
 export const checkUserAllField = async (user: any) => {
